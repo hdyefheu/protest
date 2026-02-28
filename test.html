@@ -1,113 +1,181 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movie Gallery</title>
-    <link rel="stylesheet" href="style.css" />
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Movie Gallery</title>
 
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-      body {
-        background: #ffffff;
-        padding: 40px;
-        font-family: sans-serif;
-      }
+body {
+  background: #ffffff;
+  padding: 40px;
+  font-family: sans-serif;
+}
 
-      /* MOBILE FIRST */
-      .grid-container {
-        display: grid;
-        gap: 15px;
-        justify-content: center;
-        grid-template-columns: 1fr; /* always 1 column on phones */
-      }
+/* GRID */
+.grid-container {
+  display: grid;
+  gap: 15px;
+  justify-content: center;
+  grid-template-columns: 1fr; /* 1 column mobile */
+}
 
-      .card {
-        width: 100%;
-        aspect-ratio: 2 / 3; /* keeps poster shape automatically */
-        position: relative;
-        border-radius: 4px;
-        overflow: hidden;
-        background-size: cover;
-        background-position: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
+.card {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform .2s;
+}
 
-      /* labels */
-      .label {
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        font-size: 0.8rem;
-        padding: 6px;
-        text-align: center;
-      }
+.card:hover {
+  transform: scale(1.03);
+}
 
-      .year-badge {
-        align-self: flex-end;
-        margin: 6px;
-        border-radius: 3px;
-        padding: 3px 8px;
-        font-size: 0.75rem;
-      }
+/* overlays */
+.label {
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 6px;
+  font-size: .8rem;
+}
 
-      .title-bar {
-        width: 100%;
-        font-weight: bold;
-      }
+.year-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  border-radius: 4px;
+}
 
-      /* TABLET AND DESKTOP */
-      @media (min-width: 600px) {
-        .grid-container {
-          grid-template-columns: repeat(auto-fit, 150px);
-        }
+.title-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
 
-        .card {
-          width: 150px; /* fixed poster width */
-          aspect-ratio: 2 / 3;
-        }
-      }
-    </style>
-  </head>
+/* SAVE BUTTON */
+.save-btn {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(0,0,0,.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 16px;
+}
 
-  <body>
-    <div class="grid-container" id="movie-gallery"></div>
+.save-btn:hover {
+  background: rgba(0,0,0,.9);
+}
 
-    <script>
-      async function loadMovies() {
-        try {
-          const response = await fetch("movies.json");
-          const movies = await response.json();
+/* GO TO TOP BUTTON */
+#topBtn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 20px;
+  cursor: pointer;
+  display: none;
+}
 
-          const container = document.getElementById("movie-gallery");
+#topBtn:hover {
+  background: #333;
+}
 
-          movies.forEach((movie) => {
-            const card = document.createElement("div");
+/* DESKTOP */
+@media (min-width:600px){
+  .grid-container{
+    grid-template-columns: repeat(auto-fit,150px);
+  }
 
-            card.className = "card";
+  .card{
+    width:150px;
+  }
+}
+</style>
+</head>
 
-            card.style.backgroundImage = `url('${movie.image}')`;
+<body>
 
-            card.innerHTML = `
-            <div class="label year-badge">${movie.year}</div>
-            <div class="label title-bar">${movie.title}</div>
-          `;
+<div class="grid-container" id="movie-gallery"></div>
 
-            container.appendChild(card);
-          });
-        } catch (error) {
-          console.error(error);
-        }
-      }
+<button id="topBtn">↑</button>
 
-      loadMovies();
-    </script>
-  </body>
+<script>
+async function loadMovies(){
+  const response = await fetch("movies.json");
+  const movies = await response.json();
+  const container = document.getElementById("movie-gallery");
+
+  movies.forEach(movie=>{
+    const card = document.createElement("div");
+    card.className="card";
+    card.style.backgroundImage=`url('${movie.image}')`;
+
+    // CLICK → detail page
+    card.onclick=()=>{
+      window.location.href=`test2.html?id=${movie.id}`;
+    };
+
+    // SAVE BUTTON
+    const saveBtn = document.createElement("button");
+    saveBtn.className="save-btn";
+    saveBtn.innerHTML="⬇";
+    saveBtn.onclick = (e)=>{
+      e.stopPropagation(); // prevent detail page
+      const link = document.createElement("a");
+      link.href = movie.image;
+      link.download = movie.title+".jpg";
+      link.click();
+    };
+
+    card.innerHTML += `
+      <div class="label year-badge">${movie.year}</div>
+      <div class="label title-bar">${movie.title}</div>
+    `;
+    card.appendChild(saveBtn);
+    container.appendChild(card);
+  });
+}
+
+loadMovies();
+
+// GO TO TOP BUTTON
+const topBtn = document.getElementById("topBtn");
+
+window.onscroll = ()=>{
+  if(window.scrollY>400){
+    topBtn.style.display="block";
+  }else{
+    topBtn.style.display="none";
+  }
+};
+
+topBtn.onclick=()=>{
+  window.scrollTo({ top:0, behavior:"smooth" });
+};
+</script>
+
+</body>
 </html>
-
