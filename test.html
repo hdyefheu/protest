@@ -2,18 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Archive</title>
-    <link rel="stylesheet" href="movies.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Gallery</title>
+    <style>
+        /* Reset and Base Styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: sans-serif; background: #121212; padding: 20px; }
+        
+        /* Grid container: 1 column mobile, multi-column desktop */
+        .grid-container {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr; 
+        }
+
+        @media (min-width: 600px) {
+            .grid-container { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+        }
+
+        /* The Card */
+        .card {
+            position: relative;
+            height: 350px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover { transform: scale(1.02); }
+
+        /* Label Styling */
+        .label {
+            background: rgba(60, 60, 60, 0.8);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            width: fit-content;
+        }
+
+        .year-badge { align-self: flex-end; margin: 10px; }
+        .title-bar { width: 100%; border-radius: 0; padding: 15px; font-weight: bold; }
+    </style>
 </head>
 <body>
 
-    <header>
-        <h1>Movie Archive</h1>
-    </header>
+    <div class="grid-container" id="movie-gallery"></div>
 
-    <section class="movie-grid" id="movieGrid">
-        </section>
+    <script>
+        async function loadMovies() {
+            try {
+                const response = await fetch('movies.json');
+                if (!response.ok) throw new Error('Failed to load JSON');
+                const movies = await response.json();
+                const container = document.getElementById('movie-gallery');
 
-    <script src="movies.js"></script>
+                movies.forEach(movie => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.style.backgroundImage = `url('${movie.image}')`;
+                    
+                    card.innerHTML = `
+                        <div class="label year-badge">${movie.year}</div>
+                        <div class="label title-bar">${movie.title}</div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('movie-gallery').innerHTML = '<p style="color:white;">Error loading movies. Please check your local server.</p>';
+            }
+        }
+
+        loadMovies();
+    </script>
 </body>
 </html>
