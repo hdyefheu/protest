@@ -1,81 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movie Gallery</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #ffffff; padding: 20px; font-family: sans-serif; }
-        
-        /* Centered grid with fixed card sizes to match your screenshot */
-        .grid-container {
-            display: grid;
-            gap: 15px;
-            justify-content: center;
-            /* Mobile: 1 column */
-            grid-template-columns: 1fr; 
-        }
+    <link rel="stylesheet" href="style.css" />
 
-        /* Desktop: Multiple columns with fixed width for a compact look */
-        @media (min-width: 600px) {
-            .grid-container { 
-                grid-template-columns: repeat(auto-fit, 160px); 
-            }
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: #ffffff;
+        padding: 20px;
+        font-family: sans-serif;
+      }
+
+      /* MOBILE FIRST */
+      .grid-container {
+        display: grid;
+        gap: 15px;
+        justify-content: center;
+        grid-template-columns: 1fr; /* always 1 column on phones */
+      }
+
+      .card {
+        width: 100%;
+        aspect-ratio: 2 / 3; /* keeps poster shape automatically */
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      /* labels */
+      .label {
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        font-size: 0.8rem;
+        padding: 6px;
+        text-align: center;
+      }
+
+      .year-badge {
+        align-self: flex-end;
+        margin: 6px;
+        border-radius: 3px;
+        padding: 3px 8px;
+        font-size: 0.75rem;
+      }
+
+      .title-bar {
+        width: 100%;
+        font-weight: bold;
+      }
+
+      /* TABLET AND DESKTOP */
+      @media (min-width: 600px) {
+        .grid-container {
+          grid-template-columns: repeat(auto-fit, 150px);
         }
 
         .card {
-            width: 100%;
-            height: 240px; /* Matched to your visual reference */
-            position: relative;
-            border-radius: 4px;
-            overflow: hidden;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+          width: 150px; /* fixed poster width */
+          aspect-ratio: 2 / 3;
         }
-
-        /* Transparent overlays */
-        .label {
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            font-size: 0.75rem;
-            padding: 4px;
-            text-align: center;
-        }
-
-        .year-badge { align-self: flex-end; margin: 5px; border-radius: 2px; padding: 2px 6px; }
-        .title-bar { width: 100%; font-weight: bold; }
+      }
     </style>
-</head>
-<body>
+  </head>
 
+  <body>
     <div class="grid-container" id="movie-gallery"></div>
 
     <script>
-        async function loadMovies() {
-            try {
-                const response = await fetch('movies.json');
-                const movies = await response.json();
-                const container = document.getElementById('movie-gallery');
+      async function loadMovies() {
+        try {
+          const response = await fetch("movies.json");
+          const movies = await response.json();
 
-                movies.forEach(movie => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.style.backgroundImage = `url('${movie.image}')`;
-                    
-                    card.innerHTML = `
-                        <div class="label year-badge">${movie.year}</div>
-                        <div class="label title-bar">${movie.title}</div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (error) { console.error('Error:', error); }
+          const container = document.getElementById("movie-gallery");
+
+          movies.forEach((movie) => {
+            const card = document.createElement("div");
+
+            card.className = "card";
+
+            card.style.backgroundImage = `url('${movie.image}')`;
+
+            card.innerHTML = `
+            <div class="label year-badge">${movie.year}</div>
+            <div class="label title-bar">${movie.title}</div>
+          `;
+
+            container.appendChild(card);
+          });
+        } catch (error) {
+          console.error(error);
         }
+      }
 
-        loadMovies();
+      loadMovies();
     </script>
-</body>
+  </body>
 </html>
