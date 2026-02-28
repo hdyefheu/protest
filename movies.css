@@ -1,0 +1,52 @@
+.movie-grid {
+    display: grid;
+    gap: 15px;
+    padding: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Optional: hover effect for all screen sizes */
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+/* Card styling remains the same */
+.movie-card {
+    position: relative;
+    aspect-ratio: 2/3;
+    overflow: hidden;
+    border-radius: 8px;
+    width: 100%; 
+}
+
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-year {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+}
+
+.movie-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+    text-align: center;
+}

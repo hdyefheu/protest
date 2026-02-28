@@ -1,0 +1,30 @@
+/* style.css - Global Styles */
+
+/* Reset margins for all browsers */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Force the page to take up the full browser height */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Set up the body as a vertical flex container */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Viewport Height ensures it never shrinks smaller than the screen */
+    font-family: sans-serif;
+}
+
+/* Push the footer down by making <main> take up all available space */
+main {
+    flex: 1;
+}
+
+
+/* Add a class via JS once loaded */
+body.loaded {
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}

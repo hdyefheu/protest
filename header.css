@@ -1,0 +1,108 @@
+/* --- Global Reset & Typography --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: sans-serif; color: black; }
+
+/* --- Header Layout --- */
+.main-header {
+    padding: 1.5rem 5%;
+    background: white;
+    border-bottom: 1px solid black;
+}
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo { font-weight: bold; font-size: 1.5rem; }
+
+/* --- Navigation & Desktop Search Wrapper --- */
+.nav-and-search {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* --- Search Bar Styles --- */
+.desktop-search {
+    padding: 0.5rem;
+    border: 1px solid black;
+    outline: none;
+}
+
+.mobile-search { display: none; margin-top: 1rem; }
+.mobile-search input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid black;
+    outline: none;
+}
+
+/* --- Navigation Menu --- */
+.nav-menu ul { display: flex; list-style: none; }
+
+.nav-menu a {
+    text-decoration: none;
+    color: black;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: 0.3s;
+}
+
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    transition: width 0.3s ease;
+}
+
+.nav-menu a:hover::after { width: 100%; }
+.nav-menu a.active { background: black; color: white; }
+
+/* --- Hamburger Menu Logic --- */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background: black;
+    margin: 3px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+/* --- Mobile "X" Animation --- */
+.menu-toggle.open .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.menu-toggle.open .bar:nth-child(2) { opacity: 0; }
+.menu-toggle.open .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+/* --- Responsive Media Queries --- */
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .desktop-search { display: none; }
+    .mobile-search { display: block; }
+    
+    .nav-menu {
+        display: none;
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
+        border-top: 1px solid #eee;
+    }
+
+    .nav-menu.open { display: block; }
+    .nav-menu ul { flex-direction: column; padding: 1rem 0; }
+    .nav-menu li { margin: 0.5rem 0; }
+}

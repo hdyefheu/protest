@@ -1,0 +1,13 @@
+[
+  { "id": 1, "title": "Inception1", "year": "2010", "image": "images/poster1.jpg" },
+  { "id": 2, "title": "Inception2", "year": "2010", "image": "images/poster2.jpg" },
+  { "id": 3, "title": "Inception3", "year": "2010", "image": "images/poster3.jpg" },
+  { "id": 4, "title": "Inception4", "year": "2010", "image": "images/poster4.jpg" },
+  { "id": 5, "title": "Inception5", "year": "2010", "image": "images/poster5.jpg" },
+  { "id": 6, "title": "Inception6", "year": "2010", "image": "images/poster6.jpg" },
+  { "id": 7, "title": "Inception7", "year": "2010", "image": "images/poster7.jpg" },
+  { "id": 8, "title": "Inception8", "year": "2010", "image": "images/poster8.jpg" },
+  { "id": 9, "title": "Inception9", "year": "2010", "image": "images/poster9.jpg" },
+  { "id": 10, "title": "Inception10", "year": "2010", "image": "images/poster10.jpg" },
+  { "id": 11, "title": "Interstellar", "year": "2014", "image": "images/poster11.jpg" }
+]
