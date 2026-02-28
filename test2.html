@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Detail</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:sans-serif;background:#111;color:white;padding:20px;}
+
+.back-btn{
+  display:inline-block;
+  margin-bottom:20px;
+  color:white;
+  text-decoration:none;
+  font-size:18px;
+}
+
+.movie-container{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.poster{
+  width:100%;
+  max-width:300px;
+  aspect-ratio:2/3;
+  background-size:cover;
+  background-position:center;
+  border-radius:8px;
+}
+
+.info h1{margin-bottom:10px;}
+.info p{opacity:.8;line-height:1.5;}
+
+.related{margin-top:40px;}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,120px);gap:10px;}
+.related-card{
+  aspect-ratio:2/3;
+  background-size:cover;
+  background-position:center;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+@media(min-width:700px){
+  .movie-container{flex-direction:row;}
+}
+</style>
+</head>
+<body>
+
+<a href="test.html" class="back-btn">← Back</a>
+
+<div class="movie-container">
+  <div id="poster" class="poster"></div>
+  <div class="info">
+    <h1 id="title"></h1>
+    <p id="year"></p>
+    <p>Demo description. You can later load plot, actors, rating, etc.</p>
+  </div>
+</div>
+
+<div class="related">
+  <h2>Related Movies</h2>
+  <div class="related-grid" id="related"></div>
+</div>
+
+<script>
+async function loadDetail(){
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  const response = await fetch("movies.json");
+  const movies = await response.json();
+
+  const movie = movies.find(m=>m.id==id);
+  if(!movie) return;
+
+  document.getElementById("poster").style.backgroundImage = `url('${movie.image}')`;
+  document.getElementById("title").textContent = movie.title;
+  document.getElementById("year").textContent = "Year: " + movie.year;
+
+  // RELATED MOVIES
+  const relatedContainer = document.getElementById("related");
+  movies.filter(m=>m.id!=id).slice(0,6).forEach(m=>{
+    const card = document.createElement("div");
+    card.className="related-card";
+    card.style.backgroundImage=`url('${m.image}')`;
+    card.onclick = ()=>{ window.location.href=`test2.html?id=${m.id}`; };
+    relatedContainer.appendChild(card);
+  });
+}
+
+loadDetail();
+</script>
+
+</body>
+</html>
